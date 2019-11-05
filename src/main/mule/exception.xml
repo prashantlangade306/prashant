@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="exceptionFlow" doc:id="99446722-14ca-46f0-ae0a-cb5cb03477b5" >
+		<http:listener doc:name="Listener" doc:id="e66d98f1-2b6c-4f24-b93e-ec7e049ba4d3" config-ref="HTTP_Listener_config" path="/except" allowedMethods="GET">
+			<http:error-response statusCode="#[vars.httpstatus]">
+				<http:body ><![CDATA[#[payload]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<set-payload value='#["###"]' doc:name="Set Payload" doc:id="e0b48820-6df6-4139-b474-2b7f2be1d397" mimeType="application/json"/>
+		<logger level="INFO" doc:name="Logger" doc:id="cb66a055-9d1a-41ed-bfa9-bf5f3c5a6113" message="#[payload]"/>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="3d6793b5-4e7d-46e3-9956-0fcf90842f0f" >
+				<set-payload value='#["There is an error in the expression of the flow!!!"]' doc:name="Set Payload" doc:id="5e55f661-8f30-4252-8cd7-bff7c0d8d504" mimeType="application/json"/>
+				<set-variable value="#[400]" doc:name="Set Variable" doc:id="73b3ac58-8494-4137-b174-642cbc756751" variableName="httpstatus"/>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+	<flow name="exceptionFlow1" doc:id="71f01190-353f-4416-a299-9f6d4f02b5e0" >
+		<http:listener doc:name="Listener" doc:id="75012c80-9b7d-4ffe-997f-976a223a8abe" config-ref="HTTP_Listener_config" path="/excep1" allowedMethods="GET" outputMimeType="application/json">
+			<http:response statusCode="#[vars.httpstatus]">
+			</http:response>
+		</http:listener>
+		<set-payload value='#["####"]' doc:name="Set Payload" doc:id="5938a522-7c17-436b-a037-495043f9c836" mimeType="application/json"/>
+		<logger level="INFO" doc:name="Logger" doc:id="cb4a4607-9797-4b9c-8be6-7164b0913025" message="#[payload]"/>
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="dde0a3aa-c792-4f2d-9930-22c2191b393a" >
+				<set-payload value='#["Error in expression. Please check it!!!"]' doc:name="Set Payload" doc:id="ec7cd734-a398-46fe-8144-8a66f7c63fea" mimeType="application/json"/>
+				<set-variable value="#[201]" doc:name="Set Variable" doc:id="deb11859-ed88-443f-bc8a-f6e443d8232f" variableName="httpstatus"/>
+			</on-error-continue>
+		</error-handler>
+	</flow>
+</mule>

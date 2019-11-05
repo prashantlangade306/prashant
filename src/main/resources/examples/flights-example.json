@@ -1,0 +1,13 @@
+[
+ {
+	"airline": "American Airlines",
+	"flightCode": "rree0001" ,
+	"fromAirportCode": "MUA" ,
+	"toAirportCode": "LAX",
+	"departureDate": "2016-01-20T00:00:00",
+ 	"emptySeats": 0,
+ 	"totalSeats": 200,
+ 	"price": 541,
+	"planeType": "Boeing 787" 
+ }
+]
